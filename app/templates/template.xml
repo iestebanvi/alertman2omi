@@ -1,0 +1,8 @@
+<omi-event-message>
+	<title> {{ title }} </title>
+	<description> {{ description }} </description>
+	<severity> {{ severity }} </severity>
+	<node> {{ node }} </node>
+	<category> {{ category }} </category>
+	<affectedCI> {{ affectedCI }} </affectedCI>
+</omi-event-message>
