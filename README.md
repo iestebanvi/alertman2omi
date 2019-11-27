@@ -1,9 +1,12 @@
-# Alertmanager to HP Omi
+# Prometheus Alertmanager to HP Omi
 
-
- - Settings are in settings.ini. This is where you set the URL where it should inject the OMI alerts
+ - Settings are passed as environment vars:
+        OMI_URL: The OMI url that will receive the alerts.
+        OMI_CATEGORY: OMI category to send in the event.
+        OMI__CI: OMI CI to send with in the event 
  - Template is in template.xml. It uses jinja.
  - You can run this app inside of openshift with oc new-app.
+ - Includes omireceiver as a dummy-service to receive the events and make some tests.
 
 oc create ns alertman2omi
 oc -n alertman2omi delete all -l app=omireceiver
