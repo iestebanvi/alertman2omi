@@ -13,14 +13,14 @@
 ```
 oc create ns alertman2omi  
 oc -n alertman2omi new-app https://github.com/jmgarciac/alertman2omi.git --context-dir=omireceiver/app --name omireceiver  
- oc -n alertman2omi new-app https://github.com/jmgarciac/alertman2omi.git --context-dir=app --name alertman2omi \  
--e OMI_URL="http://omireceiver.alertman2omi.svc:8080/post" \  
--e OMI_CATEGORY="INCIDENT"\  
--e OMI_CI="OpenShift_POC"  
+oc -n alertman2omi new-app https://github.com/jmgarciac/alertman2omi.git --context-dir=app --name alertman2omi \
+ -e OMI_URL="http://omireceiver.alertman2omi.svc:8080/post" \
+ -e OMI_CATEGORY="INCIDENT"\
+ -e OMI_CI="OpenShift_POC"  
 ```
 ### Uninstall
 ```
 oc delete ns alertman2omi  
-oc -n alertman2omi delete all -l app=omireceiver  
-oc -n alertman2omi delete all -l app=alertman2omi 
+oc -n alertman2omi delete all -l app=omireceiver
+oc -n alertman2omi delete all -l app=alertman2omi
 ```
