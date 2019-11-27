@@ -20,7 +20,7 @@ try:
     #post_url = config.get('global', 'posturl')
     #ini_category = config.get('global', 'category')
     #ini_affectedCI = config.get('global','affectedCI')
-    post_url = os.environ.get("OMI_URL", "omireceiver.alertman2omi.svc")
+    post_url = os.environ.get("OMI_URL", "http://omireceiver.alertman2omi.svc:8080/post")
     ini_category = os.environ.get("OMI_CATEGORY", "incident")
     ini_affectedCI = os.environ.get("OMI_CI", "OpenShift")
 except Exception as ex:
