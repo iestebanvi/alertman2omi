@@ -20,7 +20,7 @@ oc -n alertman2omi new-app https://github.com/jmgarciac/alertman2omi.git --conte
 ```
 ### Uninstall
 ```
-oc delete ns alertman2omi  
 oc -n alertman2omi delete all -l app=omireceiver
 oc -n alertman2omi delete all -l app=alertman2omi
+oc delete ns alertman2omi
 ```
