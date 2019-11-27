@@ -27,4 +27,6 @@ def post():
         abort(400)
 
 if __name__ == '__main__':
-    application.run(host="0.0.0.0")
+    application.run(host="0.0.0.0", port=8080)
+
+# port 8080 is needed for s2i in openshift
