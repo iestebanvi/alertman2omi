@@ -48,7 +48,7 @@ def webhook():
         alert = request.json
         print("Incoming JSON: %s\n" % alert)
 
-        for key, value in data.items():
+        for key, value in alert.items():
           print("Key:")
           print(key)
 
