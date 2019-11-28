@@ -48,14 +48,10 @@ def webhook():
         alert = request.json
         print("Incoming JSON: %s\n" % alert)
 
-        for key, value in alert.items():
-          print("Key:")
-          print(key)
-
         omi = render_template('template.xml',
-                              title=alert['commonLabels.alertname'],
-                              description=alert['commonAnnotations.message'],
-                              severity=alert['commonLabels.severity'],
+                              title=alert['commonLabels']['alertname'],
+                              description=alert['commonAnnotations']['message'],
+                              severity=alert['commonLabels']['severity'],
                               node=alert['commonLabels'],
                               category=ini_category,
                               affectedCI=ini_affectedCI
