@@ -49,9 +49,9 @@ def webhook():
         print("Incoming JSON: %s\n" % alert)
 
         omi = render_template('template.xml',
-                              title='alert',
-                              description=alert['commonAnnotation'],
-                              severity=alert['status'],
+                              title=alert['commonLabels.alertname'],
+                              description=alert['commonAnnotations.message'],
+                              severity=alert['commonLabels.severity'],
                               node=alert['commonLabels'],
                               category=ini_category,
                               affectedCI=ini_affectedCI
