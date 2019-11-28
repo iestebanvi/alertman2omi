@@ -75,7 +75,7 @@ def webhook():
 
 
 if __name__ == '__main__':
-    application.run(host="0.0.0.0", port=8080)
+    application.run(host="0.0.0.0", port=8080, debug=True)
 
 # port 8080 is needed for s2i in openshift
  
