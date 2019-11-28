@@ -4,7 +4,6 @@ from __future__ import print_function
 from future import standard_library
 
 standard_library.install_aliases()
-#import configparser
 import sys
 import os
 
@@ -13,13 +12,7 @@ from flask import Flask, request, render_template, abort
 
 application = Flask(__name__)
 
-#config = configparser.ConfigParser()
-#config.read('settings.ini')
-
 try:
-    #post_url = config.get('global', 'posturl')
-    #ini_category = config.get('global', 'category')
-    #ini_affectedCI = config.get('global','affectedCI')
     post_url = os.environ.get("OMI_URL", "http://omireceiver.alertman2omi.svc:8080/post")
     ini_category = os.environ.get("OMI_CATEGORY", "incident")
     ini_affectedCI = os.environ.get("OMI_CI", "OpenShift")
