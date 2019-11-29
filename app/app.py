@@ -53,14 +53,13 @@ def webhook():
                               category=ini_category,
                               affectedCI=ini_affectedCI
                               )
-
-        print("Outgoing XML: %s\n" % omi)
+        #print("Outgoing XML: %s\n" % omi)
 
         headers = {
             'Content-type': 'text/xml',
         }
 
-        print ("Send to omi %s %s %s "% (post_url,headers,omi))
+        print ("Send to omi %s\n%s\n%s"% (post_url,headers,omi))
         response = requests.post(post_url, headers=headers, data=omi)
         return '', response.status_code
     else:
