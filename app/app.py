@@ -52,7 +52,6 @@ def webhook():
                 alnames[ al['labels']['alertname'] ] = 1
             else:
                 alnames[ al['labels']['alertname'] ] += 1
-            #names = names + al['labels']['alertname'] + " | "
             msgs = msgs + al['annotations']['message'] + " | "
             if 'namespace' in al['labels']:
                 components = components + al['labels']['namespace']
@@ -79,7 +78,6 @@ def webhook():
                               category=ini_category,
                               affectedCI=ini_affectedCI
                               )
-        #print("Outgoing XML: %s\n" % omi)
 
         headers = {
             'Content-type': 'text/xml',
