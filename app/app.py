@@ -42,14 +42,40 @@ def webhook():
         print("Incoming JSON: %s\n" % alert)
 
         msgs = "MESSAGES: "
+        names = ""
+        alnames = {}
+        components = ""
+        sev = "none"
+
         for al in alert['alerts']:
+            if al['labels']['alertname'] not in alnames:
+                alnames[ al['labels']['alertname'] ] = 1
+            else:
+                alnames[ al['labels']['alertname'] ] += 1
+            #names = names + al['labels']['alertname'] + " | "
             msgs = msgs + al['annotations']['message'] + " | "
+            if 'namespace' in al['labels']:
+                components = components + al['labels']['namespace']
+                if 'pod' in al['labels']:
+                    components = components + "." + al['labels']['pod']
+                components = components + " | "
+
+            if  al['labels']['severity'] == 'critical':
+                sev = 'critical'
+            elif al['labels']['severity'] == 'warning' and sev != 'critical' :
+                sev = 'warning'            
+
+        for n in alnames:
+            names = names + n
+            if alnames[n] > 1:
+                names = names + " x" + str(alnames[n])
+            names = names + " | "
             
         omi = render_template('template.xml',
-                              title=alert['commonLabels']['alertname'],
-                              description=msgs,
-                              severity=alert['commonLabels']['severity'],
-                              node=alert['commonLabels'],
+                              title=names[:-3],
+                              description=msgs[:-3],
+                              severity=sev,
+                              node=components[:-3],
                               category=ini_category,
                               affectedCI=ini_affectedCI
                               )
