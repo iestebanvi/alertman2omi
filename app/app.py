@@ -14,8 +14,8 @@ application = Flask(__name__)
 
 try:
     post_url = os.environ.get("OMI_URL", "http://omireceiver.alertman2omi.svc:8080/post")
-    ini_category = os.environ.get("OMI_CATEGORY", "incident")
-    ini_affectedCI = os.environ.get("OMI_CI", "OpenShift")
+    ini_category = os.environ.get("OMI_CATEGORY", "OPENSHIFT")
+    ini_affectedCI = os.environ.get("OMI_CI", "ocp4")
 except Exception as ex:
     print('Something is wrong with config env vars OMI_URL, OMI_CATEGORY, OMI_CI: {}'.format(ex))
     sys.exit(1)
@@ -75,7 +75,9 @@ def webhook():
                               description=msgs[:-3],
                               severity=sev,
                               node=components[:-3],
+                              object=components[:-3],
                               category=ini_category,
+                              subcategory=alnames.keys()[0],
                               affectedCI=ini_affectedCI
                               )
 

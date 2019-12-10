@@ -15,8 +15,8 @@ oc create ns alertman2omi
 oc -n alertman2omi new-app https://github.com/jmgarciac/alertman2omi.git --context-dir=omireceiver/app --name omireceiver  
 oc -n alertman2omi new-app https://github.com/jmgarciac/alertman2omi.git --context-dir=app --name alertman2omi \
  -e OMI_URL="http://omireceiver.alertman2omi.svc:8080/post" \
- -e OMI_CATEGORY="INCIDENT" \
- -e OMI_CI="OpenShift_POC"  
+ -e OMI_CATEGORY="OPENSHIFT" \
+ -e OMI_CI="poc-ocp4"  
 ```
 ### Uninstall
 ```
