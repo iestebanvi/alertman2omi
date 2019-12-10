@@ -77,7 +77,7 @@ def webhook():
                               node=components[:-3],
                               object=components[:-3],
                               category=ini_category,
-                              subcategory=alnames.keys()[0],
+                              subcategory=list(alnames)[0],
                               affectedCI=ini_affectedCI
                               )
 
