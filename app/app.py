@@ -59,10 +59,11 @@ def webhook():
                     components = components + "." + al['labels']['pod']
                 components = components + " | "
 
-            if  al['labels']['severity'] == 'critical':
-                sev = 'critical'
-            elif al['labels']['severity'] == 'warning' and sev != 'critical' :
-                sev = 'warning'            
+            #if  al['labels']['severity'] == 'critical':
+            #    sev = 'critical'
+            #elif al['labels']['severity'] == 'warning' and sev != 'critical' :
+            #    sev = 'warning'
+            sev = 'critical'            
 
         for n in alnames:
             names = names + n
