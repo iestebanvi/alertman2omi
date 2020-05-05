@@ -41,7 +41,7 @@ def webhook():
         alert = request.json
         print("Incoming JSON: %s\n" % alert)
 
-        msgs = "MESSAGES: "
+        msgs = ""
         names = ""
         alnames = {}
         components = ""
