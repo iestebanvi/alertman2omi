@@ -37,58 +37,70 @@ def internal_test():
 @application.route("/webhook", methods=['POST'])
 def webhook():
     if request.method == 'POST':
-
         alert = request.json
         print("Incoming JSON: %s\n" % alert)
-
-        msgs = ""
-        names = ""
-        alnames = {}
-        components = ""
-        sev = "none"
-
-        for al in alert['alerts']:
-            if al['labels']['alertname'] not in alnames:
-                alnames[ al['labels']['alertname'] ] = 1
-            else:
-                alnames[ al['labels']['alertname'] ] += 1
-            msgs = msgs + al['annotations']['message'] + " | "
-            if 'namespace' in al['labels']:
-                components = components + al['labels']['namespace']
-                if 'pod' in al['labels']:
-                    components = components + "." + al['labels']['pod']
-                components = components + " | "
-
-            #if  al['labels']['severity'] == 'critical':
-            #    sev = 'critical'
-            #elif al['labels']['severity'] == 'warning' and sev != 'critical' :
-            #    sev = 'warning'
-            sev = 'critical'            
-
-        for n in alnames:
-            names = names + n
-            if alnames[n] > 1:
-                names = names + " x" + str(alnames[n])
-            names = names + " | "
+		
+        if alert['status'] == 'firing':
+            msgs = ""
+            names = ""
+            alnames = {}
+            components = ""
+            sev = "none"
             
-        omi = render_template('template.xml',
-                              title=names[:-3],
-                              description=msgs[:-3],
-                              severity=sev,
-                              node=components[:-3],
-                              object=components[:-3],
-                              category=ini_category,
-                              subcategory=list(alnames)[0],
-                              affectedCI=ini_affectedCI
-                              )
-
-        headers = {
-            'Content-type': 'text/xml',
-        }
-
-        print ("Send to omi %s\n%s\n%s"% (post_url,headers,omi))
-        response = requests.post(post_url, headers=headers, data=omi)
-        return '', response.status_code
+            for al in alert['alerts']:
+                if al['labels']['alertname'] not in alnames:
+                    alnames[ al['labels']['alertname'] ] = 1
+                else:
+                    alnames[ al['labels']['alertname'] ] += 1
+                if 'message' in al['annotations']:
+                    m = al['annotations']['message']
+                elif 'description' in al['annotations']:
+                    m = al['annotations']['description']
+                msgs = msgs + m + " | "
+                if 'namespace' in al['labels']:
+                    components = components + al['labels']['namespace']
+                    if 'pod' in al['labels']:
+                        components = components + "." + al['labels']['pod']
+                    components = components + " | "
+            
+                #if  al['labels']['severity'] == 'critical':
+                #    sev = 'critical'
+                #elif al['labels']['severity'] == 'warning' and sev != 'critical' :
+                #    sev = 'warning'
+                #sev = 'critical'            
+            
+            for n in alnames:
+                names = names + n
+                if alnames[n] > 1:
+                    names = names + " x" + str(alnames[n])
+                names = names + " | "
+            
+            if list(alnames)[0] == 'Watchdog':
+               sev = 'normal'
+            else:
+               sev = 'critical'
+            
+            omi = render_template('template.xml',
+                                  title=names[:-3],
+                                  description=msgs[:-3],
+                                  severity=sev,
+                                  node=components[:-3],
+                                  object=components[:-3],
+                                  category=ini_category,
+                                  subcategory=list(alnames)[0],
+                                  affectedCI=ini_affectedCI
+                                  )
+            
+            headers = {
+                'Content-type': 'text/xml',
+            }
+            
+            print ("Send to omi %s\n%s\n%s"% (post_url,headers,omi))
+            response = requests.post(post_url, headers=headers, data=omi)
+            return '', response.status_code
+        else:
+            print("Alert NOT SENT, status received is: %s\n" % str(alert['status']))
+            return "ok", 200
     else:
         abort(400)
 
