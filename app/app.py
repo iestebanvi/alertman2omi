@@ -56,18 +56,14 @@ def webhook():
                     m = al['annotations']['message']
                 elif 'description' in al['annotations']:
                     m = al['annotations']['description']
+                elif 'summary' in al['annotations']:
+                    m = al['annotations']['summary']
                 msgs = msgs + m + " | "
                 if 'namespace' in al['labels']:
                     components = components + al['labels']['namespace']
                     if 'pod' in al['labels']:
                         components = components + "." + al['labels']['pod']
-                    components = components + " | "
-            
-                #if  al['labels']['severity'] == 'critical':
-                #    sev = 'critical'
-                #elif al['labels']['severity'] == 'warning' and sev != 'critical' :
-                #    sev = 'warning'
-                #sev = 'critical'            
+                    components = components + " | "      
             
             for n in alnames:
                 names = names + n
