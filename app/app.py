@@ -6,9 +6,9 @@ from future import standard_library
 standard_library.install_aliases()
 import sys
 import os
-
 import requests
 from flask import Flask, request, render_template, abort
+import json
 
 application = Flask(__name__)
 
@@ -19,7 +19,6 @@ try:
 except Exception as ex:
     print('Something is wrong with config env vars OMI_URL, OMI_CATEGORY, OMI_CI: {}'.format(ex))
     sys.exit(1)
-
 
 @application.route("/")
 def hello():
@@ -38,7 +37,8 @@ def internal_test():
 def webhook():
     if request.method == 'POST':
         alert = request.json
-        print("Incoming JSON: %s\n" % alert)
+        #print("Incoming JSON: %s\n" % alert)
+        print("Incoming JSON: ", json.dumps(alert))
 		
         if alert['status'] == 'firing':
             msgs = ""
@@ -92,8 +92,14 @@ def webhook():
             }
             
             print ("Send to omi %s\n%s\n%s"% (post_url,headers,omi))
-            response = requests.post(post_url, headers=headers, data=omi)
+            try:
+                response = requests.post(post_url, headers=headers, data=omi)
+            except requests.exceptions.RequestException as errorPost: 
+              print ("ERROR during POST to OMI")
+              raise SystemExit(errorPost)
+            
             return '', response.status_code
+
         else:
             print("Alert NOT SENT, status received is: %s\n" % str(alert['status']))
             return "ok", 200
